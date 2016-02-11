@@ -30,8 +30,8 @@ app.get('/test', function(reqHTTP, resHTTP) {
 	for (i=0; i < times; i++) {
 		result += 'cool!<br/>';
 	}
-	result += new Date();
-	console.log(reqHTTP.secure);
+	result += '<hr/>' + JSON.stringify(reqHTTP);
+	result += '<hr/>' + new Date();
 	resHTTP.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
@@ -41,7 +41,7 @@ app.get('/', function(reqHTTP, resHTTP) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 		});
 	} else {
-		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
+		// resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
 	}
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
@@ -51,7 +51,7 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 		});
 	} else {
-		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
+		// resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
 	}
 });
 

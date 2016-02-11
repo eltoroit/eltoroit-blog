@@ -15,6 +15,15 @@ console.log('#ElToroIT: HTTPS Port: ' + https_port);
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+app.use(function (req, res, next) {
+	if (req.secure) {
+		// request was via https, so do no special handling
+		next();
+	} else {
+		// request was via http, so redirect to https
+		res.redirect('https://' + req.headers.host + req.url);
+	}
+});
 app.get('/test', function(request, response) {
 	var result = ''
 	var times = process.env.TIMES || 5

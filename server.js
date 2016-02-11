@@ -25,13 +25,13 @@ app.get('/test', function(request, response) {
 	response.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
-	console.log('#ElToroIT: Root Called');
+	console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
 	sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 		resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 	});
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	console.log('#ElToroIT: Blog.app Called');
+	console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
 	sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 		resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 	});
@@ -65,7 +65,6 @@ function sfdcLoginOauthUNPW(callback) {
 		password: process.env.password,
 		format: "json",
 	};
-	console.log('#ElToroIT-REMOVE COMMENT: postData', postData);
 	postData = queryString.stringify(postData);
 	
 	var options = {
@@ -79,17 +78,14 @@ function sfdcLoginOauthUNPW(callback) {
 			'Content-Length': postData.length,
 		}
 	};
-	console.log('#ElToroIT-REMOVE COMMENT: options', options);
 	
 	var reqWS = https.request(options, function(resWS) {
 		resWS.setEncoding('utf8');
 		resWS.on('data', function(chunk) {
-			console.log('#ElToroIT-REMOVE COMMENT: Received chunk');
 			sfdcLoginOutput = JSON.parse(chunk);
 		});
 		resWS.on('end', function() {
-			console.log('#ElToroIT-REMOVE COMMENT: Completed');
-			console.log('#ElToroIT-FIXED COMMENT: sfdcLoginOutput', sfdcLoginOutput);
+			console.log('#ElToroIT: LoggedIn', sfdcLoginOutput.id);
 			callback(sfdcLoginOutput);
 		})
 	});

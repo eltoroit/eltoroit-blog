@@ -1,4 +1,4 @@
-console.log('#ElToroIT: === === === SERVER RESTART === === === [' + new Date() + "]");
+console.log('#ElToroIT: === === === SERVER RESTART === === === [' + new Date() + ']');
 
 var express = require('express');				// http://expressjs.com/en
 var http = require('http');						// https://nodejs.org/api/http.html
@@ -25,13 +25,13 @@ app.get('/test', function(request, response) {
 	response.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
-	console.log("#ElToroIT: Root Called');
+	console.log('#ElToroIT: Root Called');
 	sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 		resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 	});
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	console.log("#ElToroIT: Blog.app Called');
+	console.log('#ElToroIT: Blog.app Called');
 	sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 		resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 	});
@@ -39,7 +39,7 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 
 // Create an HTTP service
 http.createServer(app).listen(port);
-console.log("#ElToroIT: Server listening for HTTP connections on port ", port);
+console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 
 // Create an HTTPS service if the certs are present
 try {
@@ -48,9 +48,9 @@ try {
 	  cert: fs.readFileSync('key-cert.pem')
 	};
 	https.createServer(options, app).listen(https_port);
-	console.log("#ElToroIT: Server listening for HTTPS connections on port ", https_port);
+	console.log('#ElToroIT: Server listening for HTTPS connections on port ', https_port);
 } catch (e) {
-	console.error("#ElToroIT: Security certs not found, HTTPS not available");
+	console.error('#ElToroIT: Security certs not found, HTTPS not available');
 }
 
 function sfdcLoginOauthUNPW(callback) {

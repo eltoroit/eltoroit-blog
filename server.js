@@ -31,7 +31,7 @@ app.get('/test', function(reqHTTP, resHTTP) {
 		result += 'cool!<br/>';
 	}
 	result += '<hr/>' + new Date();
-	console.log(reqHTTP.headers);
+	console.log('#ElToroIT: JSON-Header: ' + JSON.stringify(reqHTTP.headers));
 	resHTTP.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {

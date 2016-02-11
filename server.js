@@ -34,13 +34,13 @@ app.get('/test', function(request, response) {
 	response.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
-	if (req.secure) {
+	if (reqHTTP.secure) {
 		console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
 		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 		});
 	} else {
-		res.redirect('https://' + req.headers.host + req.url);
+		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
 	}
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
@@ -50,7 +50,7 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 		});
 	} else {
-		res.redirect('https://' + req.headers.host + req.url);
+		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
 	}
 });
 

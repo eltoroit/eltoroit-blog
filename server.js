@@ -30,8 +30,8 @@ app.get('/test', function(reqHTTP, resHTTP) {
 	for (i=0; i < times; i++) {
 		result += 'cool!<br/>';
 	}
-	result += '<hr/>' + JSON.stringify(reqHTTP);
 	result += '<hr/>' + new Date();
+	console.log(reqHTTP)
 	resHTTP.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {

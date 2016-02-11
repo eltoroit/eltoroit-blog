@@ -15,18 +15,9 @@ console.log('#ElToroIT: HTTPS Port: ' + https_port);
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
-/*app.use(function (req, res, next) {
-	if (req.secure) {
-		// request was via https, so do no special handling
-		// next();
-	} else {
-		// request was via http, so redirect to https
-		res.redirect('https://' + req.headers.host + req.url);
-	}
-});*/
 app.get('/test', function(reqHTTP, resHTTP) {
-	var result = ''
-	var times = process.env.TIMES || 5
+	var result = '';
+	var times = process.env.TIMES || 5;
 	for (i=0; i < times; i++) {
 		result += 'cool!<br/>';
 	}
@@ -58,6 +49,7 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 
+/*
 // Create an HTTPS service if the certs are present
 try {
 	var options = {
@@ -69,6 +61,7 @@ try {
 } catch (e) {
 	console.error('#ElToroIT: Security certs not found, HTTPS not available');
 }
+*/
 
 function sfdcLoginOauthUNPW(callback) {
 	var sfdcLoginOutput = null;
@@ -80,7 +73,7 @@ function sfdcLoginOauthUNPW(callback) {
 		client_secret: process.env.clientSecret,
 		username: process.env.username,
 		password: process.env.password,
-		format: "json",
+		format: "json"
 	};
 	postData = queryString.stringify(postData);
 	
@@ -103,6 +96,7 @@ function sfdcLoginOauthUNPW(callback) {
 		});
 		resWS.on('end', function() {
 			console.log('#ElToroIT: LoggedIn', sfdcLoginOutput.id);
+			console.log('#ElToroIT: LoggedIn (2)', JSON.stringify(sfdcLoginOutput));
 			callback(sfdcLoginOutput);
 		})
 	});

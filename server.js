@@ -13,8 +13,13 @@ console.log('#ElToroIT: HTTPS Port: ' + https_port);
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
-	console.log("Root Called!");
-	res.render('test');
+	var result = ''
+	var times = process.env.TIMES || 5
+	for (i=0; i < times; i++) {
+		result += 'cool!<br/>';
+	}
+	result += new Date();
+	response.send(result);
 });
 
 // Create an HTTP service

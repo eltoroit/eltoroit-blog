@@ -31,27 +31,26 @@ app.get('/test', function(reqHTTP, resHTTP) {
 		result += 'cool!<br/>';
 	}
 	result += '<hr/>' + new Date();
-	console.log('#ElToroIT: JSON-Header: ' + JSON.stringify(reqHTTP.headers));
 	resHTTP.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
-	if (reqHTTP.secure) {
+	if (isSecured(reqHTTP)) {
 		console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
 		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 		});
 	} else {
-		// resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
+		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
 	}
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	if (reqHTTP.secure) {
+	if (isSecured(reqHTTP)) {
 		console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
 		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
 		});
 	} else {
-		// resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
+		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
 	}
 });
 
@@ -114,6 +113,9 @@ function sfdcLoginOauthUNPW(callback) {
 	// write data to request body
 	reqWS.write(postData);
 	reqWS.end();
+}
+function isSecured(reqHTTP) {
+	return (reqHTTP.headers['x-forwarded-proto']=='https');
 }
 
 

@@ -24,14 +24,15 @@ app.use(express.static(__dirname + '/public'));
 		res.redirect('https://' + req.headers.host + req.url);
 	}
 });*/
-app.get('/test', function(request, response) {
+app.get('/test', function(reqHTTP, resHTTP) {
 	var result = ''
 	var times = process.env.TIMES || 5
 	for (i=0; i < times; i++) {
 		result += 'cool!<br/>';
 	}
 	result += new Date();
-	response.send(result);
+	console.log(reqHTTP.secure);
+	resHTTP.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
 	if (reqHTTP.secure) {

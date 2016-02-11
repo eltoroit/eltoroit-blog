@@ -1,0 +1,41 @@
+http://instantsprite.com/
+
+.sprite { background: url('sprite.png') no-repeat top left; width: 30px; height: 30px;  } 
+.sprite.SalesforceCertifiedColors { background-position: 0 0; width: 121px; } 
+.sprite.Cloud_Silver { background-position: 0 -40px; width: 40px; } 
+.sprite.Cloud_White { background-position: 0 -80px; width: 40px; } 
+.sprite.Disqus_Silver { background-position: 0 -120px; width: 31px; } 
+.sprite.Disqus_White { background-position: 0 -160px; width: 31px; } 
+.sprite.Facebook_Silver { background-position: 0 -200px; } 
+.sprite.Facebook_White { background-position: 0 -240px; } 
+.sprite.Github_Silver { background-position: 0 -280px; } 
+.sprite.Github_White { background-position: 0 -320px; } 
+.sprite.Linkedin_Silver { background-position: 0 -360px; } 
+.sprite.Linkedin_White { background-position: 0 -400px; } 
+.sprite.Rss_Silver { background-position: 0 -440px; } 
+.sprite.Rss_White { background-position: 0 -480px; } 
+.sprite.SalesforceBW_Silver { background-position: 0 -520px; width: 43px; } 
+.sprite.SalesforceBW_White { background-position: 0 -560px; width: 43px; } 
+.sprite.Twitter_Silver { background-position: 0 -600px; } 
+.sprite.Twitter_White { background-position: 0 -640px; } 
+.sprite.Youtube_Silver { background-position: 0 -680px; } 
+.sprite.Youtube_White { background-position: 0 -720px; } 
+
+<div class='sprite Cloud_Silver'></div>
+<div class='sprite Cloud_White'></div>
+<div class='sprite Disqus_Silver'></div>
+<div class='sprite Disqus_White'></div>
+<div class='sprite Facebook_Silver'></div>
+<div class='sprite Facebook_White'></div>
+<div class='sprite Github_Silver'></div>
+<div class='sprite Github_White'></div>
+<div class='sprite Linkedin_Silver'></div>
+<div class='sprite Linkedin_White'></div>
+<div class='sprite Rss_Silver'></div>
+<div class='sprite Rss_White'></div>
+<div class='sprite SalesforceBW_Silver'></div>
+<div class='sprite SalesforceBW_White'></div>
+<div class='sprite Twitter_Silver'></div>
+<div class='sprite Twitter_White'></div>
+<div class='sprite Youtube_Silver'></div>
+<div class='sprite Youtube_White'></div>

@@ -1,0 +1,102 @@
+/* Background Clouds */
+#bg {
+	position: fixed;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	z-index: -1;
+}
+#bg img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	min-width: 50%;
+	min-height: 50%;
+}
+
+/* Enable use of floated navbar text */
+@media (max-width: 980px) {
+	.navbar-text.pull-right {
+		float: none;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+}
+
+/* Paddings */
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+/* Normal Texts */
+.APBodyH1 {
+	color: rgb(133, 194, 227);
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 36px;
+	font-weight: normal;
+	text-align: center;
+}
+.APBodyH1 :hover {
+	color: rgb(255, 255, 255);
+}
+.APBodyH2 {
+	color: rgb(133, 194, 227);
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 28px;
+	font-weight: normal;
+}
+.APBodyH2 :hover {
+	color: rgb(255, 255, 255);
+}
+.APBodyH3 {
+	color: rgb(133, 194, 227);
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 22px;
+	font-weight: normal;
+}
+.APBody {
+	color: rgb(255, 255, 255) !important;
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: justify;
+}
+.APSideH1 {
+	color: rgb(133, 194, 227);
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+.APSideH2 {
+	color: #C0C0C0;
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+}
+.APSideH3 {
+	color: #C0C0C0;
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+}
+.APSide {
+	color: rgb(255, 255, 255);
+	display: block;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: left;
+}

@@ -44,7 +44,7 @@ app.get('/', function(reqHTTP, resHTTP) {
 	}
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	if (req.secure) {
+	if (reqHTTP.secure) {
 		console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
 		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
 			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});

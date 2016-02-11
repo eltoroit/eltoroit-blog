@@ -15,15 +15,15 @@ console.log('#ElToroIT: HTTPS Port: ' + https_port);
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
 	if (req.secure) {
 		// request was via https, so do no special handling
-		next();
+		// next();
 	} else {
 		// request was via http, so redirect to https
 		res.redirect('https://' + req.headers.host + req.url);
 	}
-});
+});*/
 app.get('/test', function(request, response) {
 	var result = ''
 	var times = process.env.TIMES || 5
@@ -34,16 +34,24 @@ app.get('/test', function(request, response) {
 	response.send(result);
 });
 app.get('/', function(reqHTTP, resHTTP) {
-	console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
-	sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
-		resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
-	});
+	if (req.secure) {
+		console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
+		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
+			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
+		});
+	} else {
+		res.redirect('https://' + req.headers.host + req.url);
+	}
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
-	sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
-		resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
-	});
+	if (req.secure) {
+		console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
+		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
+			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
+		});
+	} else {
+		res.redirect('https://' + req.headers.host + req.url);
+	}
 });
 
 // Create an HTTP service

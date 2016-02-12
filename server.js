@@ -49,9 +49,30 @@ http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 
 var loggedIn = {};
-loggedIn.sfdcLoginOutput = null;
-loggedIn.timeOut = 1 * 60000; // 1 minute = 60,000 milliseconds
-loggedIn.expires = new Date(new Date() - (2*loggedIn.timeOut)); // Create it as already expired
+timeInitialize();
+function loggedInInitialize() {
+	var currentTime = new Date();
+	console.log('***1 #ElToroIT: currentTime: ', currentTime);
+	currentTime = currentTime.valueOf();
+	console.log('***1 #ElToroIT: currentTime: ', currentTime);
+
+	loggedIn = {};
+	loggedIn.sfdcLoginOutput = null;
+	loggedIn.timeOut = 1 * 60000; // 1 minute = 60,000 milliseconds
+	loggedIn.expires = currentTime - (2*loggedIn.timeOut); // Create it as already expired
+	console.log('***1 #ElToroIT: loggedIn: ', loggedIn);
+}
+function loggedInSave(sfdcLoginOutput) {
+	loggedIn.sfdcLoginOutput = sfdcLoginOutput;
+	
+	var currentTime = new Date();
+	console.log('***2 #ElToroIT: currentTime: ', currentTime);
+	currentTime = currentTime.valueOf();
+	console.log('***2 #ElToroIT: currentTime: ', currentTime);
+
+	loggedIn.expires = currentTime + loggedIn.timeOut;
+	console.log('--- #ElToroIT: Credentials stored: ', loggedIn);
+}
 function processLOutRequest(reqHTTP, resHTTP) {
 	// Is HTTPS?
 	console.log('#ElToroIT: Secure?');
@@ -117,11 +138,7 @@ function sfdcLoginOauthUNPW(callback) {
 		});
 		resWS.on('end', function() {
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
-			loggedIn.sfdcLoginOutput = sfdcLoginOutput;
-			var expiresAt = new Date() + loggedIn.timeOut;
-			loggedIn.expires = new Date(expiresAt);
-			console.log('--- #ElToroIT: Saving new expiration: ', loggedIn.expires);
-			console.log('--- #ElToroIT: Credentials stored: ');
+			loggedInSave(sfdcLoginOutput)
 			callback(sfdcLoginOutput);
 		})
 	});

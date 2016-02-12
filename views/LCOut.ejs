@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<base href="http://eltoroit.herokuapp.com/" target="_blank">
 		<meta charset="UTF-8">
 		<title>Loading ElToro.IT (Lightning Components)</title>
 		<link href="/resource/SLDS/assets/styles/salesforce-lightning-design-system-ltng.min.css" type="text/css" rel="stylesheet">
@@ -24,37 +25,52 @@
 			}
 			.herokuMiddleText {
 				background: #000;
-				font-size: 48px;
 				font-style: oblique;
 				color: #FFF;
 				text-align: center;
+			}
+			.bigText {
+				font-size: 48px;			
+			}
+			.smallText {
+				font-size: 1rem;
 			}
 		</style>
 	</head>
 	<body>
 		<div id="herokuMiddle" class="herokuMiddle">
 			<div class="herokuMiddleText" >
-				Please wait...
+				<table style="border: 1px white solid; width:400px; height: 60px">
+					<tr>
+						<td style="width:138px;height:150px"><img src="/resource/Blog/ElTorito/138x150.JPG" style="min-width:138px; min-height:150px"></td>
+						<td class="bigText">Please<br/>wait...</td>
+					</tr>
+					<tr>
+						<td class="smallText" colspan="2" id="statusText">Loading...</td>
+					</tr>
+				</table>
 			</div>
 		</div>		
 		<div id="BlogDiv"/>
 		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
 		<script>
-			console.log("Started Loading....", new Date());
-			loadLCOut();
-				
+			function changeStatus(newStatus) {
+				document.getElementById("statusText").innerHTML = newStatus;
+			}
 			function hide() {
 				document.getElementById("herokuMiddle").style.display = "none";
 			}
 			function loadLCOut() {
+				changeStatus('Using Lightning Components...');
 				$Lightning.use("c:BlogOut", function() {
-					console.log("Using....", new Date());
+					changeStatus('Creating BlogCmp...');
 					$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
-						console.log("Created....", new Date());						
 						hide();
 					});
 				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
 			}
+			changeStatus('Started Loading...');
+			loadLCOut();
 		</script>
 	</body>
 </html>

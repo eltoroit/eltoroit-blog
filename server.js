@@ -85,7 +85,7 @@ function processLOutRequest(reqHTTP, resHTTP) {
 	
 	// Already logged in?
 	console.log('#ElToroIT: Logged In? ');
-	var currentTime = new Date();
+	var currentTime = new Date().valueOf();
 	var expired = loggedIn.expires < currentTime;
 	console.log('--- #ElToroIT: CurrentTime: ', currentTime);
 	console.log('--- #ElToroIT: Expired?: ', expired);

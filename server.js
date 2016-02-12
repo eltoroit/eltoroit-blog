@@ -119,7 +119,7 @@ function sfdcLoginOauthUNPW(callback) {
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
 			loggedIn.sfdcLoginOutput = sfdcLoginOutput;
 			loggedIn.expires = new Date(new Date() + loggedIn.timeOut);
-			console.log('--- #ElToroIT: Credentials stored: ', JSON.stringifyloggedIn);
+			console.log('--- #ElToroIT: Credentials stored: ', JSON.stringify(loggedIn));
 			callback(sfdcLoginOutput);
 		})
 	});

@@ -96,8 +96,8 @@ function sfdcLoginOauthUNPW(callback) {
 		});
 		resWS.on('end', function() {
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
-			console.log('#ElToroIT-02c: LoggedIn (all)', sfdcLoginOutput);
-			console.log('#ElToroIT-02b: LoggedIn (id)', JSON.pasfdcLoginOutput.id);
+			console.log('#ElToroIT-02c: LoggedIn (all)', JSON.stringify(sfdcLoginOutput));
+			console.log('#ElToroIT-02b: LoggedIn (id)', sfdcLoginOutput.id);
 			console.log('#ElToroIT-02d: LoggedIn (issued_at)', sfdcLoginOutput.issued_at);
 			callback(sfdcLoginOutput);
 		})

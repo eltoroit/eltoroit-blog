@@ -63,7 +63,7 @@ function processLOutRequest(reqHTTP, resHTTP) {
 	console.log('--- #ElToroIT: Yes, continue!');
 	
 	// Already logged in?
-	console.log('#ElToroIT: Logged In?');
+	console.log('#ElToroIT: Logged In? ', loggedIn);
 	var currentTime = new Date();
 	var expired = loggedIn.expires < currentTime;
 	console.log('--- #ElToroIT: CurrentTime: ', currentTime);
@@ -118,7 +118,13 @@ function sfdcLoginOauthUNPW(callback) {
 		resWS.on('end', function() {
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
 			loggedIn.sfdcLoginOutput = sfdcLoginOutput;
-			loggedIn.expires = new Date(new Date() + loggedIn.timeOut);
+			var expiresAt = new Date();
+			console.log('1-' + expiresAt);
+			expiresAt += loggedIn.timeOut;
+			console.log('2-' + expiresAt);
+			expiresAt += new Date(expiresAt);
+			console.log('3-' + expiresAt);
+			loggedIn.expires = expiresAt;
 			console.log('--- #ElToroIT: Credentials stored: ', JSON.stringify(loggedIn));
 			callback(sfdcLoginOutput);
 		})

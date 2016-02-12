@@ -63,6 +63,7 @@ function loggedInSave(sfdcLoginOutput) {
 	
 	var currentTime = new Date().valueOf();
 	loggedIn.expires = currentTime + loggedIn.timeOut;
+	sfdcLoginOutput.lightningUrl = sfdcLoginOutput.instance_url.replace("my.salesforce", "lightning.force");
 }
 function processLOutRequest(reqHTTP, resHTTP) {
 	// Is HTTPS?

@@ -92,13 +92,12 @@ function sfdcLoginOauthUNPW(callback) {
 	var reqWS = https.request(options, function(resWS) {
 		resWS.setEncoding('utf8');
 		resWS.on('data', function(chunk) {
-			console.log('#ElToroIT-01: On Data: Chunk: ', chunk);
 			sfdcLoginOutput += chunk;
 		});
 		resWS.on('end', function() {
-			console.log('#ElToroIT-02a: On End: ');
-			console.log('#ElToroIT-02c: LoggedIn (all)', JSON.stringify(sfdcLoginOutput));
-			console.log('#ElToroIT-02b: LoggedIn (id)', sfdcLoginOutput.id);
+			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
+			console.log('#ElToroIT-02c: LoggedIn (all)', sfdcLoginOutput);
+			console.log('#ElToroIT-02b: LoggedIn (id)', JSON.pasfdcLoginOutput.id);
 			console.log('#ElToroIT-02d: LoggedIn (issued_at)', sfdcLoginOutput.issued_at);
 			callback(sfdcLoginOutput);
 		})

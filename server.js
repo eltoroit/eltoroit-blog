@@ -49,7 +49,7 @@ http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 
 var loggedIn = {};
-timeInitialize();
+loggedInInitialize();
 function loggedInInitialize() {
 	var currentTime = new Date();
 	console.log('***1 #ElToroIT: currentTime: ', currentTime);

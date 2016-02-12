@@ -51,27 +51,18 @@ console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 var loggedIn = {};
 loggedInInitialize();
 function loggedInInitialize() {
-	var currentTime = new Date();
-	console.log('***1 #ElToroIT: currentTime: ', currentTime);
-	currentTime = currentTime.valueOf();
-	console.log('***1 #ElToroIT: currentTime: ', currentTime);
+	var currentTime = new Date().valueOf();
 
 	loggedIn = {};
 	loggedIn.sfdcLoginOutput = null;
-	loggedIn.timeOut = 1 * 60000; // 1 minute = 60,000 milliseconds
+	loggedIn.timeOut = 10 * 60000; // 1 minute = 60,000 milliseconds
 	loggedIn.expires = currentTime - (2*loggedIn.timeOut); // Create it as already expired
-	console.log('***1 #ElToroIT: loggedIn: ', loggedIn);
 }
 function loggedInSave(sfdcLoginOutput) {
 	loggedIn.sfdcLoginOutput = sfdcLoginOutput;
 	
-	var currentTime = new Date();
-	console.log('***2 #ElToroIT: currentTime: ', currentTime);
-	currentTime = currentTime.valueOf();
-	console.log('***2 #ElToroIT: currentTime: ', currentTime);
-
+	var currentTime = new Date().valueOf();
 	loggedIn.expires = currentTime + loggedIn.timeOut;
-	console.log('--- #ElToroIT: Credentials stored: ', loggedIn);
 }
 function processLOutRequest(reqHTTP, resHTTP) {
 	// Is HTTPS?
@@ -87,6 +78,7 @@ function processLOutRequest(reqHTTP, resHTTP) {
 	console.log('#ElToroIT: Logged In? ');
 	var currentTime = new Date().valueOf();
 	var expired = loggedIn.expires < currentTime;
+	console.log('--- #ElToroIT: SavedTime: ', loggedIn.expires);
 	console.log('--- #ElToroIT: CurrentTime: ', currentTime);
 	console.log('--- #ElToroIT: Expired?: ', expired);
 	
@@ -98,7 +90,7 @@ function processLOutRequest(reqHTTP, resHTTP) {
 		});		
 	} else {
 		// Use stored credentials
-		console.log('--- #ElToroIT: Using stored credentials: ', loggedIn);
+		console.log('--- #ElToroIT: Using stored credentials');
 		renderPage(reqHTTP, resHTTP, loggedIn.sfdcLoginOutput);
 	}
 }

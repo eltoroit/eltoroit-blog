@@ -118,13 +118,8 @@ function sfdcLoginOauthUNPW(callback) {
 		resWS.on('end', function() {
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
 			loggedIn.sfdcLoginOutput = sfdcLoginOutput;
-			var expiresAt = new Date();
-			console.log('1-' + expiresAt);
-			expiresAt += loggedIn.timeOut;
-			console.log('2-' + expiresAt);
-			expiresAt += new Date(expiresAt);
-			console.log('3-' + expiresAt);
-			loggedIn.expires = expiresAt;
+			var expiresAt = new Date() + loggedIn.timeOut;
+			loggedIn.expires = new Date(expiresAt);
 			console.log('--- #ElToroIT: Credentials stored: ', JSON.stringify(loggedIn));
 			callback(sfdcLoginOutput);
 		})

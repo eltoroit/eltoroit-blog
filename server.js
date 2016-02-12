@@ -64,7 +64,7 @@ try {
 */
 
 function sfdcLoginOauthUNPW(callback) {
-	var sfdcLoginOutput = null;
+	var sfdcLoginOutput = '';
 	var postData = {
 		grant_type: "password",
 		// —Consumer key from the connected app definition.
@@ -92,11 +92,14 @@ function sfdcLoginOauthUNPW(callback) {
 	var reqWS = https.request(options, function(resWS) {
 		resWS.setEncoding('utf8');
 		resWS.on('data', function(chunk) {
-			sfdcLoginOutput = JSON.parse(chunk);
+			console.log('#ElToroIT: On Data: Chunk: ', chunk);
+			sfdcLoginOutput += chunk;
 		});
 		resWS.on('end', function() {
+			console.log('#ElToroIT: On End: ' + sfdcLoginOutput);
 			console.log('#ElToroIT: LoggedIn', sfdcLoginOutput.id);
-			console.log('#ElToroIT: LoggedIn (2)', JSON.stringify(sfdcLoginOutput));
+			console.log('#ElToroIT: LoggedIn (all)', JSON.stringify(sfdcLoginOutput));
+			console.log('#ElToroIT: LoggedIn (issued_at)', JSON.stringify(sfdcLoginOutput.issued_at));
 			callback(sfdcLoginOutput);
 		})
 	});

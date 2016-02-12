@@ -15,18 +15,27 @@ console.log('#ElToroIT: HTTPS Port: ' + https_port);
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+
+// Test page.
+var times = null;
 app.get('/test', function(reqHTTP, resHTTP) {
 	var result = '';
-	var times = (process.env.TIMES || 5)+1;
+	if (times) {
+		times++;
+	} else {
+		times = 5;
+	} 
+	console.log(times);
 	if (times > 15) times = 5;
-	process.env.TIMES = times;
-	result += 'Times: ' + process.env.TIMES;
-	for (i=0; i < times; i++) {
+	result += 'Times: ' + times + '<br/>';
+	for (var i = 1; i <= times; i++) {
 		result += i + '. cool!<br/>';
 	}
 	result += '<hr/>' + new Date();
 	resHTTP.send(result);
 });
+
+// Blog pages
 app.get('/', function(reqHTTP, resHTTP) {
 	if (isSecured(reqHTTP)) {
 		console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
@@ -51,20 +60,6 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 // Create an HTTP service
 http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
-
-/*
-// Create an HTTPS service if the certs are present
-try {
-	var options = {
-	  key: fs.readFileSync('key.pem'),
-	  cert: fs.readFileSync('key-cert.pem')
-	};
-	https.createServer(options, app).listen(https_port);
-	console.log('#ElToroIT: Server listening for HTTPS connections on port ', https_port);
-} catch (e) {
-	console.error('#ElToroIT: Security certs not found, HTTPS not available');
-}
-*/
 
 function sfdcLoginOauthUNPW(callback) {
 	var sfdcLoginOutput = '';

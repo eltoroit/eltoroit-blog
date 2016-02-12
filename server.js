@@ -44,11 +44,10 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 	processLOutRequest(reqHTTP, resHTTP);
 });
 
-/*
 // Create an HTTP service
 http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
-*/
+
 var loggedIn = {};
 loggedIn.sfdcLoginOutput = null;
 loggedIn.timeOut = 1 * 60000; // 1 minute = 60,000 milliseconds

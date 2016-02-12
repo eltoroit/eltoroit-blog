@@ -41,12 +41,20 @@
 		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
 		<script>
 			console.log("Started Loading....", new Date());
-			$Lightning.use("c:BlogOut", function() {
+			loadLCOut();
+				
+			function hide() {
+				document.getElementById("herokuMiddle").style.display = "none";
+			}
+			function loadLCOut() {
+				$Lightning.use("c:BlogOut", function() {
 					console.log("Using....", new Date());
 					$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
 						console.log("Created....", new Date());						
+						hide();
 					});
 				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
+			}
 		</script>
 	</body>
 </html>

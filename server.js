@@ -24,8 +24,7 @@ app.get('/test', function(reqHTTP, resHTTP) {
 		times++;
 	} else {
 		times = 5;
-	} 
-	console.log(times);
+	}
 	if (times > 15) times = 5;
 	result += 'Times: ' + times + '<br/>';
 	for (var i = 1; i <= times; i++) {
@@ -37,30 +36,55 @@ app.get('/test', function(reqHTTP, resHTTP) {
 
 // Blog pages
 app.get('/', function(reqHTTP, resHTTP) {
-	if (isSecured(reqHTTP)) {
-		console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
-		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
-			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
-		});
-	} else {
-		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
-	}
+	console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
+	processLOutRequest(reqHTTP, resHTTP);
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	if (isSecured(reqHTTP)) {
-		console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
-		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
-			resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
-		});
-	} else {
-		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
-	}
+	console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
+	processLOutRequest(reqHTTP, resHTTP);
 });
 
+/*
 // Create an HTTP service
 http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
-
+*/
+var loggedIn = {};
+loggedIn.sfdcLoginOutput = null;
+loggedIn.timeOut = 1 * 60000; // 1 minute = 60,000 milliseconds
+loggedIn.expires = new Date(new Date() - (2*loggedIn.timeOut)); // Create it as already expired
+function processLOutRequest(reqHTTP, resHTTP) {
+	// Is HTTPS?
+	console.log('#ElToroIT: Secure?');
+	if (!isSecured(reqHTTP)) {
+		console.log('--- #ElToroIT: No, redirect!');
+		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
+		return;
+	}
+	console.log('--- #ElToroIT: Yes, continue!');
+	
+	// Already logged in?
+	console.log('#ElToroIT: Logged In?');
+	var currentTime = new Date();
+	var expired = loggedIn.expires < currentTime;
+	console.log('--- #ElToroIT: CurrentTime: ', currentTime);
+	console.log('--- #ElToroIT: Expired?: ', expired);
+	
+	if (expired) {
+		// Log in
+		console.log('--- #ElToroIT: Logging in');
+		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
+			renderPage(reqHTTP, resHTTP, sfdcLoginOutput);
+		});		
+	} else {
+		// Use stored credentials
+		console.log('--- #ElToroIT: Using stored credentials: ', loggedIn);
+		renderPage(reqHTTP, resHTTP, loggedIn.sfdcLoginOutput);
+	}
+}
+function renderPage(reqHTTP, resHTTP, sfdcLoginOutput) {
+	resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
+}
 function sfdcLoginOauthUNPW(callback) {
 	var sfdcLoginOutput = '';
 	var postData = {
@@ -94,9 +118,9 @@ function sfdcLoginOauthUNPW(callback) {
 		});
 		resWS.on('end', function() {
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
-			console.log('#ElToroIT-02c: LoggedIn (all)', JSON.stringify(sfdcLoginOutput));
-			console.log('#ElToroIT-02b: LoggedIn (id)', sfdcLoginOutput.id);
-			console.log('#ElToroIT-02d: LoggedIn (issued_at)', sfdcLoginOutput.issued_at);
+			loggedIn.sfdcLoginOutput = sfdcLoginOutput;
+			loggedIn.expires = new Date(new Date() + loggedIn.timeOut);
+			console.log('--- #ElToroIT: Credentials stored: ', JSON.stringifyloggedIn);
 			callback(sfdcLoginOutput);
 		})
 	});

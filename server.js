@@ -17,9 +17,12 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.get('/test', function(reqHTTP, resHTTP) {
 	var result = '';
-	var times = process.env.TIMES || 5;
+	var times = (process.env.TIMES || 5)+1;
+	if (times > 15) times = 5;
+	process.env.TIMES = times;
+	result += 'Times: ' + process.env.TIMES;
 	for (i=0; i < times; i++) {
-		result += 'cool!<br/>';
+		result += i + '. cool!<br/>';
 	}
 	result += '<hr/>' + new Date();
 	resHTTP.send(result);

@@ -71,13 +71,22 @@
 				document.getElementById("herokuMiddle").style.display = "none";
 			}
 			function loadLCOut() {
+				loadLCOut_Use();
+			}
+			function loadLCOut_Use() {
 				changeStatus('Connecting With Salesforce...');
 				$Lightning.use("c:BlogOut", function() {
-					changeStatus('Creating Blog Component...');
-					$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
-						hide();
-					});
+					loadLCOut_Create();
 				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
+			}
+			function loadLCOut_Create() {
+				changeStatus('Creating Blog Component...');
+				$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
+					loadLCOut_Done();
+				});			
+			}
+			function loadLCOut_Done() {
+				hide();			
 			}
 			changeStatus('Started Loading...');
 			loadLCOut();

@@ -46,6 +46,7 @@
 		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
 		<script>
 			function changeStatus(newStatus) {
+				console.log('Status; ' + newStatus);
 				document.getElementById("statusText").innerHTML = newStatus;
 			}
 			function hide() {

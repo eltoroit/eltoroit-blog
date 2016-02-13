@@ -43,8 +43,36 @@
 				left: 23px;
 			}
 		</style>
+		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
+		<script>
+			function changeStatus(newStatus) {
+				document.getElementById("statusText").innerHTML = newStatus;
+			}
+			function hide() {
+				document.getElementById("herokuMiddle").style.display = "none";
+			}
+			function LCOut() {
+				changeStatus('Started processing...');
+				LCOut_Use();
+			}
+			function LCOut_Use() {
+				changeStatus('Connecting With Salesforce...');
+				$Lightning.use("c:BlogOut", function() {
+					LCOut_Create();
+				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
+			}
+			function LCOut_Create() {
+				changeStatus('Creating Blog Component...');
+				$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
+					LCOut_Done();
+				});			
+			}
+			function LCOut_Done() {
+				hide();			
+			}
+		</script>
 	</head>
-	<body>
+	<body onload="LCOut();">
 		<div id="herokuMiddle" class="herokuMiddle">
 			<div class="herokuMiddleText" >
 				<table style="border: 1px white solid; width:400px; height: 185px">
@@ -62,34 +90,5 @@
 			</div>
 		</div>		
 		<div id="BlogDiv"/>
-		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
-		<script>
-			function changeStatus(newStatus) {
-				document.getElementById("statusText").innerHTML = newStatus;
-			}
-			function hide() {
-				document.getElementById("herokuMiddle").style.display = "none";
-			}
-			function loadLCOut() {
-				loadLCOut_Use();
-			}
-			function loadLCOut_Use() {
-				changeStatus('Connecting With Salesforce...');
-				$Lightning.use("c:BlogOut", function() {
-					loadLCOut_Create();
-				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
-			}
-			function loadLCOut_Create() {
-				changeStatus('Creating Blog Component...');
-				$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
-					loadLCOut_Done();
-				});			
-			}
-			function loadLCOut_Done() {
-				hide();			
-			}
-			changeStatus('Started Loading...');
-			loadLCOut();
-		</script>
 	</body>
 </html>

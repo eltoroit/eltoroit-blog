@@ -45,35 +45,44 @@
 		</style>
 		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
 		<script>
+			var timer;
 			var status;
 			var idxStatus = 0;
-			var timer = setInterval(function() { console.log(idxStatus++) }, 500)
-
-			function changeStatus(newStatus) {
-				console.log('Status; ' + newStatus, new Date());
-				document.getElementById("statusText").innerHTML = newStatus;
+			
+			function setStatus(newStatus) {
+				status = newStatus;
+				showStatus();
+			}
+			function showStatus() {
+				var msg = status + ' (' + idxStatus + ' seconds)';	
+				console.log('New status; ' + msg);
+				document.getElementById("statusText").innerHTML = msg;			
 			}
 			function hide() {
 				document.getElementById("herokuMiddle").style.display = "none";
 			}
 			function LCOut() {
-				changeStatus('Started processing...');
+				setStatus('Started processing...');
+				timer = setInterval(function() {
+					showStatus();
+				}, 1000);
 				LCOut_Use();
 			}
 			function LCOut_Use() {
-				changeStatus('Connecting With Salesforce...');
+				setStatus('Connecting With Salesforce...');
 				$Lightning.use("c:BlogOut", function() {
 					LCOut_Create();
 				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
 			}
 			function LCOut_Create() {
-				changeStatus('Creating Blog Component...');
+				setStatus('Creating Blog Component...');
 				$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
 					// Nothing
 				});			
 			}
 			function completedLoading() {
-				changeStatus('Done...');
+				setStatus('Done...');
+				clearTimeout(timer);
 				hide();			
 			}
 		</script>

@@ -21,7 +21,7 @@
 				left: 50%;
 				/* margin-top: -100px; */
 				margin-left: -200px;
-				z-index: 99999;
+				z-index: 999999;
 			}
 			.herokuMiddleText {
 				background: #000;
@@ -69,10 +69,10 @@
 			function LCOut_Create() {
 				changeStatus('Creating Blog Component...');
 				$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
-					LCOut_Done();
+					// Nothing
 				});			
 			}
-			function LCOut_Done() {
+			function completedLoading() {
 				changeStatus('Done...');
 				hide();			
 			}

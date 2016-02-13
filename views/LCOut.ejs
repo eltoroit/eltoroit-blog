@@ -54,7 +54,7 @@
 				showStatus();
 			}
 			function showStatus() {
-				var msg = status + ' (' + idxStatus + ' seconds)';	
+				var msg = status + ' (' + idxStatus + ' checks completed)';	
 				console.log('New status; ' + msg);
 				document.getElementById("statusText").innerHTML = msg;			
 			}
@@ -64,8 +64,9 @@
 			function LCOut() {
 				setStatus('Started processing...');
 				timer = setInterval(function() {
+					idxStatus += Math.round(Math.random()*5) + 5;
 					showStatus();
-				}, 1000);
+				}, 500);
 				LCOut_Use();
 			}
 			function LCOut_Use() {

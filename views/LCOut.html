@@ -46,6 +46,7 @@
 		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
 		<script>
 			function changeStatus(newStatus) {
+				console.log('Status; ' + newStatus, new Date());
 				document.getElementById("statusText").innerHTML = newStatus;
 			}
 			function hide() {
@@ -68,8 +69,12 @@
 				});			
 			}
 			function LCOut_Done() {
+				changeStatus('Done...');
 				hide();			
 			}
+			var i = 1
+			var timer = setInterval(function() { console.log(i++) }, 500)
+
 		</script>
 	</head>
 	<body onload="LCOut();">

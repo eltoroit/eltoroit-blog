@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<base href="http://eltoroit.herokuapp.com/" target="_blank">
+		<base href="https://eltoroit.herokuapp.com/" target="_blank">
 		<meta charset="UTF-8">
 		<title>Loading ElToro.IT (Lightning Components)</title>
 		<link href="/resource/SLDS/assets/styles/salesforce-lightning-design-system-ltng.min.css" type="text/css" rel="stylesheet">
@@ -11,7 +11,7 @@
 				margin: 0px;
 			}
 			.herokuMiddle {
-				height: 60px;
+				height: 185px;
 				width: 400px;
 				background: black;
 				color: white;
@@ -35,14 +35,24 @@
 			.smallText {
 				font-size: 1rem;
 			}
+			.spinner {
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				top: 29px;
+				left: 23px;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="herokuMiddle" class="herokuMiddle">
 			<div class="herokuMiddleText" >
-				<table style="border: 1px white solid; width:400px; height: 60px">
+				<table style="border: 1px white solid; width:400px; height: 185px">
 					<tr>
-						<td style="width:138px;height:150px"><img src="/resource/Blog/ElTorito/138x150.JPG" style="min-width:138px; min-height:150px"></td>
+						<td style="width:138px;height:150px">
+							<img src="/resource/Blog/ElTorito/138x150.JPG" style="min-width:138px; min-height:150px">
+							<img src="/resource/SLDS/assets/images/spinners/slds_spinner.gif" class="spinner"/>
+						</td>
 						<td class="bigText">Please<br/>wait...</td>
 					</tr>
 					<tr>
@@ -61,11 +71,10 @@
 				document.getElementById("herokuMiddle").style.display = "none";
 			}
 			function loadLCOut() {
-				changeStatus('Connecting to Salesforce...');
+				changeStatus('Connecting With Salesforce...');
 				$Lightning.use("c:BlogOut", function() {
-					changeStatus('Using Lightning Components...');
+					changeStatus('Creating Blog Component...');
 					$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
-						changeStatus('Creating component...');
 						hide();
 					});
 				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");

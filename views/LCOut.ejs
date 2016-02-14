@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<base href="https://eltoroit.herokuapp.com/" target="_blank">
 		<meta charset="UTF-8">
+		<base href="https://eltoroit.herokuapp.com/" target="_blank">
+		<!-- meta name="viewport" content= "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" -->
 		<title>Loading ElToro.IT (Lightning Components)</title>
 		<link href="/resource/SLDS/assets/styles/salesforce-lightning-design-system-ltng.min.css" type="text/css" rel="stylesheet">
 		<style>
@@ -10,18 +11,21 @@
 				background-color: #E8DFB0 !important;
 				margin: 0px;
 			}
-			.herokuMiddle {
-				height: 185px;
-				width: 400px;
-				background: black;
-				color: white;
-
+			.herokuCenter {
 				position: fixed;
 				top: 50%;
 				left: 50%;
-				/* margin-top: -100px; */
-				margin-left: -200px;
+				-ms-transform: translate(-50%, -50%); /* IE 9 */
+				-moz-transform: translate(-50%, -50%); /* Firefox */
+				-webkit-transform: translate(-50%, -50%); /* Chrome, Safari, Opera */
+				transform: translate(-50%, -50%);
 				z-index: 999999;
+			}
+			.herokuBox {
+				height: 185px;
+				width: 400px;
+				background: black;
+				color: white;				
 			}
 			.herokuMiddleText {
 				background: #000;
@@ -42,29 +46,67 @@
 				top: 29px;
 				left: 23px;
 			}
+			.herokuProgress {
+				width: 100%;
+				height: 10px;
+				position: relative;
+				background-color: #ddd;
+			}
+			.herokuBar {
+				background-color: #4CAF50;
+				width: 10px;
+				height: 10px;
+				position: absolute;
+				
+				-ms-transform: width 10s; /* IE 9 */
+				-moz-transform: width 10s; /* Firefox */
+				-webkit-transition: width 10s; /* For Safari 3.1 to 6.0 */
+				transition: width 2s;
+			}
 		</style>
 		<script src="<%= sfdcLoginOutput.lightningUrl %>/lightning/lightning.out.js"></script>
 		<script>
 			var timer;
 			var status;
-			var idxStatus = 0;
+			var progress = 0;
+			var progressDirection = 1; // change to -1 to decrease
+			var herokuProgressBar;   
 			
 			function setStatus(newStatus) {
 				status = newStatus;
 				showStatus();
 			}
 			function showStatus() {
-				var msg = status + ' (' + idxStatus + ' checks completed)';	
-				console.log('New status; ' + msg);
-				document.getElementById("statusText").innerHTML = msg;			
+				/* Progress Bar */
+				if (!herokuProgressBar) {
+					herokuProgressBar = document.getElementById("herokuProgressBar");   
+				}
+				if (progress < 0) {
+					progressDirection = 1;
+					progress = 0 - progress;
+				} else if (progress > 100) {
+					progressDirection = -1;
+					progress = 100 - (progress - 100);
+				} else {
+					// Just fine, do nothing!
+				}
+				if (progressDirection > 0) {
+					herokuProgressBar.style['background-color'] = '#4CAF50';
+				} else {
+					herokuProgressBar.style['background-color'] = '#389B9B';
+				}
+				herokuProgressBar.style.width = progress + '%'; 
+				
+				/* Message */				
+				document.getElementById("statusText").innerHTML = status;			
 			}
 			function hide() {
-				document.getElementById("herokuMiddle").style.display = "none";
+				document.getElementById("herokuPleaseWait").style.display = "none";
 			}
 			function LCOut() {
 				setStatus('Started processing...');
 				timer = setInterval(function() {
-					idxStatus += Math.round(Math.random()*5) + 5;
+					progress += 5 * progressDirection; // * (Math.round(Math.random()*5) + 5);
 					showStatus();
 				}, 500);
 				LCOut_Use();
@@ -89,22 +131,29 @@
 		</script>
 	</head>
 	<body onload="LCOut();">
-		<div id="herokuMiddle" class="herokuMiddle">
-			<div class="herokuMiddleText" >
-				<table style="border: 1px white solid; width:400px; height: 185px">
-					<tr>
-						<td style="width:138px;height:150px">
-							<img src="/resource/Blog/ElTorito/138x150.JPG" style="min-width:138px; min-height:150px">
-							<img src="/resource/SLDS/assets/images/spinners/slds_spinner.gif" class="spinner"/>
-						</td>
-						<td class="bigText">Please<br/>wait...</td>
-					</tr>
-					<tr>
-						<td class="smallText" colspan="2" id="statusText">Loading...</td>
-					</tr>
-				</table>
-			</div>
-		</div>		
-		<div id="BlogDiv"/>
+		<div id="herokuPleaseWait" class="herokuCenter">
+			<div class="herokuBox">
+				<div class="herokuMiddleText" >
+					<table style="border: 1px white solid; width:400px; height: 185px">
+						<tr>
+							<td style="width:138px;height:150px">
+								<img src="/resource/Blog/ElTorito/138x150.JPG" style="min-width:138px; min-height:150px">
+								<img src="/resource/SLDS/assets/images/spinners/slds_spinner.gif" class="spinner"/>
+							</td>
+							<td class="bigText">
+								Please<br/>wait...
+								<div class="herokuProgress">
+									<div id="herokuProgressBar" class="herokuBar"></div>
+								</div>	
+							</td>
+						</tr>
+						<tr>
+							<td class="smallText" colspan="2" id="statusText">Loading...</td>
+						</tr>
+					</table>
+				</div>
+			</div>		
+			<div id="BlogDiv"/>
+		</div>
 	</body>
 </html>

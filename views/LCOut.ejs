@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<base href="https://eltoroit.herokuapp.com/" target="_blank">
-		<!-- meta name="viewport" content= "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" -->
+		<meta name="viewport" content= "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>Loading ElToro.IT (Lightning Components)</title>
 		<link href="/resource/SLDS/assets/styles/salesforce-lightning-design-system-ltng.min.css" type="text/css" rel="stylesheet">
 		<link href="/resource/Blog/googleCodePrettify/prettify.css" type="text/css" rel="stylesheet" />
 		<script type="text/javascript" src="/resource/Blog/googleCodePrettify/prettify.js"></script>
 		<style>
 			body {
-				background-color: #E8DFB0 !important;
+				background-color: #201A3B !important;
 				margin: 0px;
 			}
 			.herokuCenter {
@@ -26,13 +26,10 @@
 			.herokuBox {
 				height: 185px;
 				width: 400px;
-				background: black;
-				color: white;				
 			}
 			.herokuMiddleText {
-				background: #000;
 				font-style: oblique;
-				color: #FFF;
+				color: #77C3E5;
 				text-align: center;
 			}
 			.bigText {
@@ -55,7 +52,7 @@
 				background-color: #ddd;
 			}
 			.herokuBar {
-				background-color: #4CAF50;
+				background-color: #77C3E5;
 				width: 10px;
 				height: 10px;
 				position: absolute;
@@ -93,9 +90,9 @@
 					// Just fine, do nothing!
 				}
 				if (progressDirection > 0) {
-					herokuProgressBar.style['background-color'] = '#4CAF50';
+					herokuProgressBar.style['background-color'] = '#77C3E5';
 				} else {
-					herokuProgressBar.style['background-color'] = '#389B9B';
+					herokuProgressBar.style['background-color'] = '#4CAF50';
 				}
 				herokuProgressBar.style.width = progress + '%'; 
 				
@@ -136,10 +133,10 @@
 		<div id="herokuPleaseWait" class="herokuCenter">
 			<div class="herokuBox">
 				<div class="herokuMiddleText" >
-					<table style="border: 1px white solid; width:400px; height: 185px">
+					<table style="border: 1px #77C3E5 solid; width:400px; height: 185px">
 						<tr>
 							<td style="width:138px;height:150px">
-								<img src="/resource/Blog/ElTorito/138x150.JPG" style="min-width:138px; min-height:150px">
+								<img src="/resource/Blog/ElTorito/138x150.png" style="min-width:138px; min-height:150px">
 								<img src="/resource/SLDS/assets/images/spinners/slds_spinner.gif" class="spinner"/>
 							</td>
 							<td class="bigText">

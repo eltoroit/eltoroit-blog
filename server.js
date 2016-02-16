@@ -1,15 +1,16 @@
 console.log('#ElToroIT: === === === SERVER RESTART === === === [' + new Date() + ']');
 
-var express = require('express');				// http://expressjs.com/en
-var http = require('http');						// https://nodejs.org/api/http.html
-var https = require('https');					// https://nodejs.org/api/https.html
-var fs = require('fs');							// https://nodejs.org/api/fs.html
-var env = require('node-env-file');				// https://github.com/grimen/node-env-file
+const express = require('express');				// http://expressjs.com/en
+const http = require('http');						// https://nodejs.org/api/http.html
+const https = require('https');					// https://nodejs.org/api/https.html
+const fs = require('fs');							// https://nodejs.org/api/fs.html
+const env = require('node-env-file');				// https://github.com/grimen/node-env-file
 const queryString = require('query-string');	// https://www.npmjs.com/package/query-string
 
-var app = express();
-var port = process.env.PORT || 5000;
-var https_port = process.env.HTTPS_PORT || parseInt(port) + 1;
+
+const app = express();
+const port = process.env.PORT || 5000;
+const https_port = process.env.HTTPS_PORT || parseInt(port) + 1;
 console.log('#ElToroIT: HTTP Port: ' + port);
 console.log('#ElToroIT: HTTPS Port: ' + https_port);
 
@@ -17,7 +18,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 // Test page.
-var times = null;
+let times = null;
 app.get('/test', function(reqHTTP, resHTTP) {
 	var result = '';
 	if (times) {
@@ -43,12 +44,16 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
 	processLOutRequest(reqHTTP, resHTTP);
 });
+app.get('/disqus', function(reqHTTP, resHTTP) {
+	console.log('#ElToroIT: === === === DISQUS CALLED === === === [' + new Date() + ']');
+	resHTTP.render('disqus', {reqHTTP: reqHTTP});
+});
 
 // Create an HTTP service
 http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 
-var loggedIn = {};
+let loggedIn = {};
 loggedInInitialize();
 function loggedInInitialize() {
 	var currentTime = new Date().valueOf();

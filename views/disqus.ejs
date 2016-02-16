@@ -6,6 +6,20 @@
 		<title>Comments for <%= reqHTTP.query.title %></title>
 	</head>
 	<body>
-		Comments for <%= reqHTTP.query.title %>
+		<div id="disqus_thread"></div>
+		<script>
+			console.log(reqHTTP.query);
+			var disqus_config = function () {
+				this.page.url = '<%= reqHTTP.query.url =>';
+				this.page.identifier = '<%= reqHTTP.query.identifier %>';
+			};
+			(function() {
+				var d = document, s = d.createElement('script');
+				s.src = '//<%= reqHTTP.query.shortname %>.disqus.com/embed.js';
+				s.setAttribute('data-timestamp', +new Date());
+				(d.head || d.body).appendChild(s);
+			})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 	</body>
 </html>

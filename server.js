@@ -46,6 +46,7 @@ app.get('/Blog.app', function(reqHTTP, resHTTP) {
 });
 app.get('/disqus', function(reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === DISQUS CALLED === === === [' + new Date() + ']');
+	console.log(reqHTTP.query);
 	resHTTP.render('disqus', {reqHTTP: reqHTTP});
 });
 

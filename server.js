@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 // Test page.
-let times = null;
+var times = null;
 app.get('/test', function(reqHTTP, resHTTP) {
 	var result = '';
 	if (times) {
@@ -53,7 +53,7 @@ app.get('/disqus', function(reqHTTP, resHTTP) {
 http.createServer(app).listen(port);
 console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
 
-let loggedIn = {};
+var loggedIn = {};
 loggedInInitialize();
 function loggedInInitialize() {
 	var currentTime = new Date().valueOf();

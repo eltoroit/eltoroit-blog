@@ -49,10 +49,13 @@ app.get('/disqus', function(reqHTTP, resHTTP) {
 	console.log(reqHTTP.query);
 	resHTTP.render('disqus', {reqHTTP: reqHTTP});
 });
-app.get('/*', function(reqHTTP, resHTTP) {
-	console.log('#ElToroIT: === === === ANYTHING_ELSE CALLED === === === [' + new Date() + ']');
-	console.log(JSON.stringify(reqHTTP));
-	// processLOutRequest(reqHTTP, resHTTP);
+app.get('/ArticleViewer', function(reqHTTP, resHTTP) {
+	console.log('#ElToroIT: === === === OLD BLOG CALLED === === === [' + new Date() + ']');
+	var urlBefore = reqHTTP.originalUrl;
+	console.log(urlBefore);
+	var urlAfter = str.replace("https://eltoroit.herokuapp.com/", "https://eltoro.secure.force.com/");
+	console.log(urlAfter);
+    resHTTP.redirect(urlAfter);
 });
 
 // Create an HTTP service

@@ -41,13 +41,18 @@ app.get('/', function(reqHTTP, resHTTP) {
 	processLOutRequest(reqHTTP, resHTTP);
 });
 app.get('/Blog.app', function(reqHTTP, resHTTP) {
-	console.log('#ElToroIT: === === === BlogApp CALLED === === === [' + new Date() + ']');
+	console.log('#ElToroIT: === === === BLOG_APP CALLED === === === [' + new Date() + ']');
 	processLOutRequest(reqHTTP, resHTTP);
 });
 app.get('/disqus', function(reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === DISQUS CALLED === === === [' + new Date() + ']');
 	console.log(reqHTTP.query);
 	resHTTP.render('disqus', {reqHTTP: reqHTTP});
+});
+app.get('/*', function(reqHTTP, resHTTP) {
+	console.log('#ElToroIT: === === === ANYTHING_ELSE CALLED === === === [' + new Date() + ']');
+	console.log(JSON.stringify(reqHTTP));
+	// processLOutRequest(reqHTTP, resHTTP);
 });
 
 // Create an HTTP service

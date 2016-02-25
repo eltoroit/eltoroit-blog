@@ -52,8 +52,7 @@ app.get('/disqus', function(reqHTTP, resHTTP) {
 app.get('/ArticleViewer', function(reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === OLD BLOG CALLED === === === [' + new Date() + ']');
 	var urlBefore = reqHTTP.originalUrl;
-	console.log(urlBefore);
-	var urlAfter = urlBefore.replace("https://eltoroit.herokuapp.com/", "https://eltoro.secure.force.com/");
+	var urlAfter = "https://eltoro.secure.force.com" + urlBefore	;
 	console.log(urlAfter);
     resHTTP.redirect(urlAfter);
 });

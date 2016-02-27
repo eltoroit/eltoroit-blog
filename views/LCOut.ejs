@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<!-- base href="https://eltoroit.herokuapp.com/" target="_blank" -->
+		<!-- base href="https://eltoroit.herokuapp.com/" target="_blank" / -->
 		<meta name="viewport" content= "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>Loading ElToro.IT (Lightning Components)</title>
 		<link href="/resource/SLDS/assets/styles/salesforce-lightning-design-system-ltng.min.css" type="text/css" rel="stylesheet">
@@ -117,7 +117,7 @@
 				LCOut_Use();
 			}
 			function LCOut_Use() {
-				setStatus('Connecting With Salesforce...');
+				setStatus('Initializing Aura engine...');
 				$Lightning.use("c:BlogOut", function() {
 					LCOut_Create();
 				}, "<%= sfdcLoginOutput.lightningUrl %>", "<%= sfdcLoginOutput.access_token %>");
@@ -141,10 +141,6 @@
 				<div class="herokuMiddleText" >
 					<table style="border: 1px #77C3E5 solid; width:400px; height: 185px">
 						<tr>
-							<td style="width:138px;height:150px">
-								<img src="/resource/Blog/ElTorito/138x150.png" style="min-width:138px; min-height:150px">
-								<img src="/resource/SLDS/assets/images/spinners/slds_spinner.gif" class="spinner"/>
-							</td>
 							<td class="bigText">
 								Please<br/>wait...
 								<div class="herokuProgress">

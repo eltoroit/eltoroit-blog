@@ -125,7 +125,7 @@
 			function LCOut_Create() {
 				setStatus('Creating Blog Component...');
 				$Lightning.createComponent("c:BlogCmp", {}, "BlogDiv", function(cmp) {
-					// Nothing
+					completedLoading();
 				});			
 			}
 			function completedLoading() {

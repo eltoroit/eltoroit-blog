@@ -56,6 +56,10 @@ app.get('/ArticleViewer', function(reqHTTP, resHTTP) {
 	console.log(urlAfter);
     resHTTP.redirect(urlAfter);
 });
+app.get('/:pageCalled', function(reqHTTP, resHTTP) {
+	console.log("XXXXX: " + req.params.pageCalled);
+}
+
 
 // Create an HTTP service
 http.createServer(app).listen(port);

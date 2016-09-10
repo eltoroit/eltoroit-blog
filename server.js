@@ -56,9 +56,12 @@ app.get('/ArticleViewer', function(reqHTTP, resHTTP) {
 	console.log(urlAfter);
     resHTTP.redirect(urlAfter);
 });
-app.get('/:pageCalled', function(reqHTTP, resHTTP) {
-	console.log("XXXXX: " + reqHTTP.params.pageCalled);
-}
+app.get('/:tagUsed', function(reqHTTP, resHTTP) {
+	console.log('#ElToroIT: === === === TAG USED === === === [' + new Date() + ']');
+	var urlAfter = "/Blog.app?page=" + reqHTTP.params.tagUsed;
+	console.log(urlAfter);
+    resHTTP.redirect(urlAfter);
+});
 
 
 // Create an HTTP service

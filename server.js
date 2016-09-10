@@ -57,7 +57,7 @@ app.get('/ArticleViewer', function(reqHTTP, resHTTP) {
     resHTTP.redirect(urlAfter);
 });
 app.get('/:pageCalled', function(reqHTTP, resHTTP) {
-	console.log("XXXXX: " + req.params.pageCalled);
+	console.log("XXXXX: " + reqHTTP.params.pageCalled);
 }
 
 

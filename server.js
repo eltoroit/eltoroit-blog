@@ -15,7 +15,14 @@ console.log('#ElToroIT: HTTP Port: ' + port);
 console.log('#ElToroIT: HTTPS Port: ' + https_port);
 
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
+
+app.use(function(req, res, next) {
+	express.static(__dirname + '/public')
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 
 // Test page.
 var times = null;

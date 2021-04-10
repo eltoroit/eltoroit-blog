@@ -132,7 +132,7 @@ function loggedInSave(sfdcLoginOutput) {
 	sfdcLoginOutput.lightningUrl = sfdcLoginOutput.instance_url.replace("my.salesforce", "lightning.force");
 }
 function processLOutRequest(reqHTTP, resHTTP) {
-	if (process.env.LOCAL !== "YES") {
+	if (process.env.HEROKU === "YES") {
 		// Is HTTPS?
 		console.log('#ElToroIT: Secure?');
 		if (!isSecured(reqHTTP)) {

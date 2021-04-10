@@ -1,11 +1,12 @@
+require('dotenv').config();
 console.log('#ElToroIT: === === === SERVER RESTART === === === [' + new Date() + ']');
 
-const express = require('express');				// http://expressjs.com/en
+const express = require('express');					// http://expressjs.com/en
 const http = require('http');						// https://nodejs.org/api/http.html
-const https = require('https');					// https://nodejs.org/api/https.html
+const https = require('https');						// https://nodejs.org/api/https.html
 const fs = require('fs');							// https://nodejs.org/api/fs.html
 const env = require('node-env-file');				// https://github.com/grimen/node-env-file
-const queryString = require('query-string');	// https://www.npmjs.com/package/query-string
+const queryString = require('query-string');		// https://www.npmjs.com/package/query-string
 
 
 const app = express();
@@ -19,7 +20,7 @@ app.set('view engine', 'ejs');
 
 app.use(
 	express.static(__dirname + '/public'),
-	function(req, res, next) {
+	function (req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		next();
@@ -28,7 +29,7 @@ app.use(
 
 // Test page.
 var times = null;
-app.get('/test', function(reqHTTP, resHTTP) {
+app.get('/test', function (reqHTTP, resHTTP) {
 	var result = '';
 	if (times) {
 		times++;
@@ -45,37 +46,73 @@ app.get('/test', function(reqHTTP, resHTTP) {
 });
 
 // Blog pages
-app.get('/', function(reqHTTP, resHTTP) {
+app.get('/', function (reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === ROOT CALLED === === === [' + new Date() + ']');
 	processLOutRequest(reqHTTP, resHTTP);
 });
-app.get('/Blog.app', function(reqHTTP, resHTTP) {
+app.get('/Blog.app', function (reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === BLOG_APP CALLED === === === [' + new Date() + ']');
 	processLOutRequest(reqHTTP, resHTTP);
 });
-app.get('/disqus', function(reqHTTP, resHTTP) {
+app.get('/file', (reqHTTP, resHTTP) => {
+	console.log('#ElToroIT: === === === FILE CALLED === === === [' + new Date() + ']');
+
+	let options = null;
+	let file = {
+		attachmentId: reqHTTP.query.id
+	}
+
+	options = {
+		method: 'GET',
+		hostname: 'eltoroit.my.salesforce.com',
+		path: `/services/data/v51.0/query?q=SELECT Id, IsDeleted, ParentId, Name, IsPrivate, ContentType, BodyLength, Body, OwnerId, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, Description FROM Attachment WHERE Id = '${file.attachmentId}'`,
+		headers: {
+			Authorization: `${loggedIn.sfdcLoginOutput.token_type} ${loggedIn.sfdcLoginOutput.access_token}`
+		}
+	};
+	callWebService(options)
+		.then(body => {
+			file.metadata = JSON.parse(body.toString()).records[0];
+			options.path = `/services/data/v51.0/sobjects/Attachment/${file.attachmentId}/body`;
+			return callWebService(options);
+		})
+		.catch(error => {
+			console.error('#ElToroIT-04: ERROR: problem with request: ', error);
+		})
+		.then(body => {
+			file.body = body;
+			resHTTP.set('Content-Type', file.metadata.ContentType);
+			resHTTP.send(file.body);
+			// debugger;
+		})
+		.catch(error => {
+			console.error('#ElToroIT-05: ERROR: problem with request: ', error);
+		})
+});
+
+app.get('/disqus', function (reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === DISQUS CALLED === === === [' + new Date() + ']');
 	console.log(reqHTTP.query);
-	resHTTP.render('disqus', {reqHTTP: reqHTTP});
+	resHTTP.render('disqus', { reqHTTP: reqHTTP });
 });
-app.get('/ArticleViewer', function(reqHTTP, resHTTP) {
+app.get('/ArticleViewer', function (reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === OLD BLOG CALLED === === === [' + new Date() + ']');
 	var urlBefore = reqHTTP.originalUrl;
-	var urlAfter = "https://eltoro.secure.force.com" + urlBefore	;
+	var urlAfter = "https://eltoro.secure.force.com" + urlBefore;
 	console.log(urlAfter);
-    resHTTP.redirect(urlAfter);
+	resHTTP.redirect(urlAfter);
 });
-app.get('/:tagUsed', function(reqHTTP, resHTTP) {
+app.get('/:tagUsed', function (reqHTTP, resHTTP) {
 	console.log('#ElToroIT: === === === TAG USED === === === [' + new Date() + ']');
 	var urlAfter = "/Blog.app?page=" + reqHTTP.params.tagUsed;
 	console.log(urlAfter);
-    resHTTP.redirect(urlAfter);
+	resHTTP.redirect(urlAfter);
 });
 
 
 // Create an HTTP service
 http.createServer(app).listen(port);
-console.log('#ElToroIT: Server listening for HTTP connections on port ', port);
+console.log(`#ElToroIT: Server listening for HTTP connections on port: https://localhost:${port}`);
 
 var loggedIn = {};
 loggedInInitialize();
@@ -85,25 +122,27 @@ function loggedInInitialize() {
 	loggedIn = {};
 	loggedIn.sfdcLoginOutput = null;
 	loggedIn.timeOut = 10 * 60000; // 1 minute = 60,000 milliseconds
-	loggedIn.expires = currentTime - (2*loggedIn.timeOut); // Create it as already expired
+	loggedIn.expires = currentTime - (2 * loggedIn.timeOut); // Create it as already expired
 }
 function loggedInSave(sfdcLoginOutput) {
 	loggedIn.sfdcLoginOutput = sfdcLoginOutput;
-	
+
 	var currentTime = new Date().valueOf();
 	loggedIn.expires = currentTime + loggedIn.timeOut;
 	sfdcLoginOutput.lightningUrl = sfdcLoginOutput.instance_url.replace("my.salesforce", "lightning.force");
 }
 function processLOutRequest(reqHTTP, resHTTP) {
-	// Is HTTPS?
-	console.log('#ElToroIT: Secure?');
-	if (!isSecured(reqHTTP)) {
-		console.log('--- #ElToroIT: No, redirect!');
-		resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
-		return;
+	if (process.env.LOCAL !== "YES") {
+		// Is HTTPS?
+		console.log('#ElToroIT: Secure?');
+		if (!isSecured(reqHTTP)) {
+			console.log('--- #ElToroIT: No, redirect!');
+			resHTTP.redirect('https://' + reqHTTP.headers.host + reqHTTP.url);
+			return;
+		}
+		console.log('--- #ElToroIT: Yes, continue!');
 	}
-	console.log('--- #ElToroIT: Yes, continue!');
-	
+
 	// Already logged in?
 	console.log('#ElToroIT: Logged In? ');
 	var currentTime = new Date().valueOf();
@@ -111,13 +150,13 @@ function processLOutRequest(reqHTTP, resHTTP) {
 	console.log('--- #ElToroIT: SavedTime: ', loggedIn.expires);
 	console.log('--- #ElToroIT: CurrentTime: ', currentTime);
 	console.log('--- #ElToroIT: Expired?: ', expired);
-	
+
 	if (expired) {
 		// Log in
 		console.log('--- #ElToroIT: Logging in');
-		sfdcLoginOauthUNPW(function(sfdcLoginOutput) {
+		sfdcLoginOauthUNPW(function (sfdcLoginOutput) {
 			renderPage(reqHTTP, resHTTP, sfdcLoginOutput);
-		});		
+		});
 	} else {
 		// Use stored credentials
 		console.log('--- #ElToroIT: Using stored credentials');
@@ -125,10 +164,9 @@ function processLOutRequest(reqHTTP, resHTTP) {
 	}
 }
 function renderPage(reqHTTP, resHTTP, sfdcLoginOutput) {
-	resHTTP.render('LCOut', {sfdcLoginOutput: sfdcLoginOutput});
+	resHTTP.render('LCOut', { sfdcLoginOutput: sfdcLoginOutput });
 }
 function sfdcLoginOauthUNPW(callback) {
-	var sfdcLoginOutput = '';
 	var postData = {
 		grant_type: "password",
 		// —Consumer key from the connected app definition.
@@ -140,7 +178,7 @@ function sfdcLoginOauthUNPW(callback) {
 		format: "json"
 	};
 	postData = queryString.stringify(postData);
-	
+
 	var options = {
 		protocol: "https:",
 		hostname: "login.salesforce.com",
@@ -152,30 +190,42 @@ function sfdcLoginOauthUNPW(callback) {
 			'Content-Length': postData.length,
 		}
 	};
-	
-	var reqWS = https.request(options, function(resWS) {
-		resWS.setEncoding('utf8');
-		resWS.on('data', function(chunk) {
-			sfdcLoginOutput += chunk;
-		});
-		resWS.on('end', function() {
+
+	callWebService(options, postData)
+		.then(body => {
+			let sfdcLoginOutput = body.toString();
 			sfdcLoginOutput = JSON.parse(sfdcLoginOutput);
 			loggedInSave(sfdcLoginOutput)
 			callback(sfdcLoginOutput);
 		})
-	});
-	reqWS.on('error', function(e) {
-		console.log('#ElToroIT-03: ERROR: problem with request: ' + e.message);
-	});
-
-	// write data to request body
-	reqWS.write(postData);
-	reqWS.end();
+		.catch(error => {
+			console.log('#ElToroIT-03: ERROR: problem with request: ', error);
+		})
 }
 function isSecured(reqHTTP) {
-	return (reqHTTP.headers['x-forwarded-proto']=='https');
+	return (reqHTTP.headers['x-forwarded-proto'] == 'https');
 }
 
+function callWebService(options, postData = null) {
+	return new Promise((resolve, reject) => {
+		options.maxRedirects = 20;
+		options.path = encodeURI(options.path);
+		const req = https.request(options, (res) => {
+			let chunks = [];
+			res.on("error", (error) => { reject(error); });
+			res.on("data", (chunk) => { chunks.push(chunk); });
+			res.on("end", (chunk) => {
+				let body = Buffer.concat(chunks);
+				// console.log(body.toString());
+				resolve(body);
+			});
+		});
+		if (postData) {
+			req.write(postData);
+		}
+		req.end();
+	})
+}
 
 
 
